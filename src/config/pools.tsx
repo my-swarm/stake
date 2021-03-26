@@ -17,5 +17,6 @@ export const pools: PoolMeta[] = [
     name: 'SWM/ETH Pool',
     tokenSymbol: 'SWM/ETH LP',
     description: null,
+    poolLink: 'http://app.uniswap.org',
   },
 ];

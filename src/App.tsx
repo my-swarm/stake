@@ -9,19 +9,15 @@ function App() {
   return (
     <Layout className="layout">
       <div className="header-hero">
-        <Header>
-          <Row>
-            <Col span={12}>
-              <div className="logo">
-                <img src="/logo.svg" alt="Logo" />
-              </div>
-            </Col>
-            <Col span={12} style={{ textAlign: 'right', color: '#fff', fontSize: '1.125rem' }}>
+        <div className="header-hero-overlay" />
+        <div className="header-hero-content">
+          <Header>
+            <div style={{ textAlign: 'right', color: '#fff', fontSize: '1.125rem' }}>
               <MetamaskConnect />
-            </Col>
-          </Row>
-        </Header>
-        <Hero />
+            </div>
+          </Header>
+          <Hero />
+        </div>
       </div>
       <Content>
         {connected ? (
@@ -40,7 +36,9 @@ function App() {
         )}
       </Content>
       <Footer>
-        <div style={{ textAlign: 'center' }}>Created by Swarm Network 2021.</div>
+        <div style={{ textAlign: 'center' }}>
+          Created by <a href="https://swarmnetwork.org">Swarm Network</a> 2021.
+        </div>
       </Footer>
     </Layout>
   );

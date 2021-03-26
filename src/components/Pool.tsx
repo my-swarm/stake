@@ -160,29 +160,29 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
       {poolInfo ? (
         <Card>
           <Row className="poolHeader">
-            <Col span={18} className="pool-header-left">
+            <Col span={24} sm={18} className="pool-header-left">
               <Space>
                 <div className="pool-title">{pool.name}</div>
                 {pool.id !== 0 && (
-                  <a className="pool-add-liquidity" href="https://app.uniswap.org">
+                  <a className="pool-add-liquidity" href={pool.poolLink}>
                     Add liquidity to Uniswap
                   </a>
                 )}
               </Space>
             </Col>
-            <Col span={6} className="pool-header-right">
+            <Col span={24} sm={6} className="pool-header-right">
               {poolInfo.allocPoint}× rewards
             </Col>
           </Row>
           <Divider />
-          <Row>
-            <Col span={12}>
+          <Row className="pool-info">
+            <Col span={24} sm={12}>
               <div className="pool-image">
                 <img src={`/${pool.icon}`} alt="Token symbol" />
               </div>
             </Col>
-            <Col span={12}>
-              <div className="pool-info">
+            <Col span={24} sm={12}>
+              <div>
                 <div className="pool-apy">APY: {apy}%</div>
                 {pool.description && <p>{pool.description}</p>}
               </div>
@@ -205,41 +205,43 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
             <Col>
               <div className="stake">
                 <h3 className="stake-title">Stake your {pool.tokenSymbol} tokens to earn SWM rewards</h3>
-                {isApproved ? (
-                  <>
-                    <div className="stake-balance">
-                      <Space>
-                        <span>Available: {formatBalance()}</span>
-                        <span>Staked: {formatStaked()}</span>
-                      </Space>
-                    </div>
-                    <div className="stake-form">
-                      <Space size="small">
-                        <Input
-                          className="stake-input"
-                          value={amount}
-                          onChange={(e) => setAmount(e.target.value)}
-                          suffix={
-                            <Button type="link" onClick={handleMax} size="small" className="stake-max">
-                              Max
-                            </Button>
-                          }
-                        />
-                        <Dropdown.Button
-                          overlay={<PoolDepositWithdrawMenu onChange={handleSetDwAction} />}
-                          icon={<DownOutlined />}
-                          onClick={handleDepositWithdraw}
-                        >
-                          {dwButtonTitle()}
-                        </Dropdown.Button>
-                      </Space>
-                    </div>
-                  </>
-                ) : (
-                  <Button onClick={handleApprove}>
-                    {action === 'approve' ? 'Approving...' : `Approve ${pool.tokenSymbol}`}
-                  </Button>
-                )}
+                <div className="stake-balance">
+                  {isApproved ? (
+                    <Space>
+                      <span>Available: {formatBalance()}</span>
+                      <span>Staked: {formatStaked()}</span>
+                    </Space>
+                  ) : (
+                    <span>&nbsp;</span>
+                  )}
+                </div>
+                <div className="stake-form">
+                  {isApproved ? (
+                    <Space size="small">
+                      <Input
+                        className="stake-input"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        suffix={
+                          <Button type="link" onClick={handleMax} size="small" className="stake-max">
+                            Max
+                          </Button>
+                        }
+                      />
+                      <Dropdown.Button
+                        overlay={<PoolDepositWithdrawMenu onChange={handleSetDwAction} />}
+                        icon={<DownOutlined />}
+                        onClick={handleDepositWithdraw}
+                      >
+                        {dwButtonTitle()}
+                      </Dropdown.Button>
+                    </Space>
+                  ) : (
+                    <Button onClick={handleApprove}>
+                      {action === 'approve' ? 'Approving...' : `Approve ${pool.tokenSymbol}`}
+                    </Button>
+                  )}
+                </div>
               </div>
 
               {!!error && (

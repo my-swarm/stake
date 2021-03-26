@@ -7,6 +7,7 @@ export interface PoolMeta {
   code: string;
   icon: string;
   description?: string;
+  poolLink?: string;
 }
 
 export interface PoolInfo {

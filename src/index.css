@@ -4,7 +4,8 @@
 .mb-4 { margin-bottom: 48px; }
 
 .logo img {
-  height: 2rem;
+  height: 5rem;
+  margin-bottom: 1rem;
   width: auto;
 }
 
@@ -50,28 +51,31 @@ button img, img.icon { height: 20px; width: auto; margin-right: 4px; }
 }
 */
 
-/*
 .pool-info {
   text-align: center;
 }
-*/
 
 .pool-image {
   padding: 0 2rem;
   max-width: 12rem;
+  margin: auto;
 }
 
 .pool-image img {
   width: 100%;
   height: auto;
+  margin-bottom: 1rem;
 }
 
-/*.pool-input {
-  margin-bottom: 8px;
-  position: relative;
-}
+@media(min-width:576px) {
+  .pool-info {
+    text-align: left;
+  }
 
- */
+  .pool-image img {
+    margin-bottom: 0;
+  }
+}
 
 .ant-statistic {
   line-height: 1.25;
@@ -84,12 +88,30 @@ button img, img.icon { height: 20px; width: auto; margin-right: 4px; }
 .ant-alert { text-align: center }
 
 .header-hero {
-  background: url(./images/bg.jpg) center center no-repeat;
+  background: url(./images/bg.jpg) center top no-repeat;
   background-size: cover;
+  position: relative;
+}
+.header-hero-overlay {
+  position: absolute;
+  z-index: 1;
+  background: rgba(0, 0, 0, .5);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 
+.header-hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+
 .hero {
+  text-align: center;
   padding: 16px;
+  position: relative;
 }
 
 .ant-layout-header {
@@ -105,24 +127,14 @@ button img, img.icon { height: 20px; width: auto; margin-right: 4px; }
 }
 
 .hero h1 {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
-  color: rgba(255,255,255,.75);
-}
-
-.hero h2 {
-  font-size:16px;
-  color: rgba(255,255,255,.75);
+  color: #fff;
+  text-transform: uppercase;
 }
 
 @media (min-width: 768px) {
-  .hero h1 {
-    font-size: 48px;
-  }
-
-  .hero h2 {
-    font-size:32px;
-  }
+  .hero h1 { font-size: 32px; }
 }
 
 .ant-layout-header {
@@ -168,16 +180,6 @@ button img, img.icon { height: 20px; width: auto; margin-right: 4px; }
 
 .metamask-connected {
   font-size: 14px;
-}
-
-.metamask-connected-connected {
-  display: none
-}
-
-@media (min-width: 768px) {
-  .metamask-connected-connected {
-    display: inline;
-  }
 }
 
 .pool-apy {
@@ -238,13 +240,6 @@ button img, img.icon { height: 20px; width: auto; margin-right: 4px; }
 .pool-add-liquidity {
   font-size: 10px;
   text-transform: uppercase;
-  color: #f3902d;
-  text-decoration: underline;
-}
-
-.pool-add-liquidity:hover {
-  color: black;
-  text-decoration: underline;
 }
 
 .stake-input {
@@ -255,3 +250,11 @@ button img, img.icon { height: 20px; width: auto; margin-right: 4px; }
   color: black;
   font-size: 12px;
 }
+
+.pools-note {
+  font-size: 12px;
+  padding:24px;
+}
+
+a { color: #f3902d; text-decoration: underline; }
+a:hover { color: black; text-decoration: underline; }

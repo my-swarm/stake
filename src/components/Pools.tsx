@@ -30,6 +30,13 @@ export function Pools(): ReactElement {
             </Col>
           ))}
         </Row>
+        <div className="pools-note">
+          <strong>Staking Contract Address</strong>
+          <br />
+          <a href="https://etherscan.io/address/0xd38abbaec03a9ff287efc9a5f0d0580e07335d1d">
+            0xD38abbAeC03a9FF287eFc9a5F0d0580E07335D1D
+          </a>
+        </div>
       </Col>
     </Row>
   );

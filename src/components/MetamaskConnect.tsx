@@ -23,7 +23,7 @@ export function MetamaskConnect({ label = 'Connect with Metamask' }: MetamaskCon
   if (address)
     return (
       <div className="metamask-connected">
-        <span className="metamask-connected-connected">Connected: </span>
+        Connected:
         <Address short>{address}</Address>
       </div>
     );
