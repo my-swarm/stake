@@ -9,6 +9,7 @@ export interface PoolMeta {
   description?: string;
   poolLink?: string;
   lpContractAddress?: string;
+  allocPoint: number;
 }
 
 export interface PoolInfo {

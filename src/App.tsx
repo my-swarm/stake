@@ -36,7 +36,7 @@ function App() {
       </Content>
       <Footer>
         <div style={{ textAlign: 'center' }}>
-          Created by <a href="https://swarmnetwork.org">Swarm Network</a> 2021.
+          Created by <a href="https://swarmnetwork.org">The Swarm Network</a> 2021.
         </div>
       </Footer>
     </Layout>

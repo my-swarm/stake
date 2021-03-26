@@ -12,6 +12,8 @@ export function useLpApy(contractKey) {
   const uniPair = useCustomContract('uniPair', lpContractAddress);
   const { chef } = useContract();
 
+  return undefined;
+
   useEffect(() => {
     (async () => {
       if (!uniPair) return;

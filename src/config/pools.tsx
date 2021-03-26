@@ -8,6 +8,7 @@ export const pools: PoolMeta[] = [
     name: 'SWM Pool',
     tokenSymbol: 'SWM',
     description: null,
+    allocPoint: 1,
   },
 
   {
@@ -19,5 +20,6 @@ export const pools: PoolMeta[] = [
     description: null,
     poolLink: 'http://app.uniswap.org',
     lpContractAddress: '0xe0b1433e0174b47e8879ee387f1069a0dbf94137',
+    allocPoint: 4,
   },
 ];

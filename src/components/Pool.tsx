@@ -183,7 +183,7 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
               </Space>
             </Col>
             <Col span={24} sm={6} className="pool-header-right">
-              {poolInfo.allocPoint}× rewards
+              {pool.allocPoint}× rewards
             </Col>
           </Row>
           <Divider />
