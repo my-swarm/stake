@@ -14,7 +14,7 @@ export function Balances(): ReactElement {
     {
       title: 'Balance',
       dataIndex: 'balance',
-      key: 'balance',
+      key: 'balanceStr',
       align: 'right' as any,
     },
   ];
@@ -22,7 +22,7 @@ export function Balances(): ReactElement {
   return (
     <Row className="mb-4">
       <Col span={24} lg={{ span: 20, offset: 2 }} xl={{ span: 16, offset: 4 }}>
-        <Table columns={columns} dataSource={data} pagination={false} />
+        <Table columns={columns} dataSource={Object.values(data)} pagination={false} />
       </Col>
     </Row>
   );

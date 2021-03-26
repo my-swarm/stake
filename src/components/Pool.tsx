@@ -44,6 +44,8 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
   const { chef } = contracts;
   const token = contracts[pool.code];
 
+  console.log({ balances });
+
   // user non-related stuff
   useEffect(() => {
     if (networkId && chef) {
@@ -79,8 +81,8 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
 
   useEffect(() => {
     if (tokenPrice && poolInfo) {
-      const usdPerSecond = tokenPrice * poolInfo.allocPoint;
-      const yearlyReturn = 12;
+      // const usdPerSecond = tokenPrice * poolInfo.allocPoint;
+      // const yearlyReturn = 12;
       setApy('123');
     }
   }, [tokenPrice, poolInfo, chefInfo]);
@@ -146,12 +148,11 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
   }
 
   function formatStaked() {
-    return staked ? formatNumber(formatUnits(staked), 2) : 'N/A';
+    return staked ? formatNumber(formatUnits(staked), 2) + ' SWM' : 'N/A';
   }
 
   function formatBalance() {
-    return 'N/A';
-    //return balances && balances[pool.id] ? formatNumber(formatUnits(balances[pool.id]), 2) : 'N/A';
+    return balances && balances[pool.code] ? formatNumber(formatUnits(balances[pool.code].balance), 2) + ' SWM' : 'N/A';
   }
 
   function dwButtonTitle() {

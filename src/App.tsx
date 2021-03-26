@@ -1,7 +1,8 @@
 import React from 'react';
-import { Col, Layout, Row } from 'antd';
-import { Pools, MetamaskConnect, Hero, Heading, Balances, Rewards, MetamaskStatus } from './components';
+import { Layout } from 'antd';
+import { Heading, Hero, MetamaskConnect, Pools } from './components';
 import { useEthers } from './lib';
+
 const { Header, Content, Footer } = Layout;
 
 function App() {
@@ -22,14 +23,12 @@ function App() {
       <Content>
         {connected ? (
           <>
-            {/*<Heading>Balances</Heading>*/}
-            {/*<Balances />*/}
             <Heading>Pools</Heading>
             <Pools />
             {/*
             <Heading>Refill Rewards</Heading>
             <Rewards />
-*/}
+            */}
           </>
         ) : (
           <div>Conneting to Ethereum...</div>

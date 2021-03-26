@@ -2,7 +2,6 @@ import React, { ReactElement, ReactNode, useCallback, useContext, useEffect, use
 import { getNetwork, Network, Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { Signer } from '@ethersproject/abstract-signer';
-import { Wallet } from '@ethersproject/wallet';
 import { ethProvider } from '../config';
 import { Metamask, EthereumNetwork } from '../lib';
 
