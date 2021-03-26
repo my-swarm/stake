@@ -50,13 +50,14 @@ button img, img.icon { height: 20px; width: auto; margin-right: 4px; }
 }
 */
 
+/*
 .pool-info {
   text-align: center;
 }
+*/
 
 .pool-image {
-  padding: 0 2rem 1rem 2rem;
-  margin: auto;
+  padding: 0 2rem;
   max-width: 12rem;
 }
 
@@ -65,25 +66,12 @@ button img, img.icon { height: 20px; width: auto; margin-right: 4px; }
   height: auto;
 }
 
-.pool-apy {
-  width: 60%;
-  border: 2px solid red;
-  color: red;
-  padding: 6px;
-  border-radius: 6px;
-  text-align: center;
-  font-weight: bold;
-  margin: 0 auto 16px;
-}
-
-.pool-input {
+/*.pool-input {
   margin-bottom: 8px;
   position: relative;
 }
 
-.ant-input-affix-wrapper {
-  max-width: 160px;
-}
+ */
 
 .ant-statistic {
   line-height: 1.25;
@@ -190,4 +178,80 @@ button img, img.icon { height: 20px; width: auto; margin-right: 4px; }
   .metamask-connected-connected {
     display: inline;
   }
+}
+
+.pool-apy {
+  color: #F99400;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.earned-label {
+  font-weight: bold;
+  /*margin-bottom: 4px;*/
+}
+
+.earned-amount {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.earned-amount .unit {
+  font-size: 14px;
+  font-weight: normal;
+  color: #999;
+}
+
+.earned-button .ant-btn {
+  padding: 0 32px;
+  height: 28px;
+  line-height: 24px;
+}
+
+.stake-title {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.stake-balance {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+
+.pool-header-right {
+  text-align: right;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 22px;
+}
+
+.pool-header h2 {
+  font-weight: bold;
+}
+
+.pool-title {
+  font-weight: bold;
+}
+
+.pool-add-liquidity {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #f3902d;
+  text-decoration: underline;
+}
+
+.pool-add-liquidity:hover {
+  color: black;
+  text-decoration: underline;
+}
+
+.stake-input {
+  height: 32px;
+}
+
+.stake-max {
+  color: black;
+  font-size: 12px;
 }

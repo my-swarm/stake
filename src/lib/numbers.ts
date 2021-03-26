@@ -17,7 +17,7 @@ export function formatNumber(n: number | string, decimals = 0): string {
   if (typeof n === 'string') {
     n = parseFloat(n);
   }
-  return new Intl.NumberFormat('en-US', { maximumFractionDigits: decimals }).format(n);
+  return new Intl.NumberFormat('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(n);
 }
 
 export function parseUnits(amount: string | number, decimals: number = 18): BigNumber {

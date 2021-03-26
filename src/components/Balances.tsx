@@ -1,48 +1,10 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-import { BigNumber } from '@ethersproject/bignumber';
+import React, { ReactElement } from 'react';
 import { Col, Row, Table } from 'antd';
-import { useContract, ContractMap, useEthers, formatUnits, formatNumber } from '../lib';
-
-interface Record {
-  key: number;
-  token: ReactElement;
-  balance: BigNumber;
-}
+import { useBalances } from '../lib/useBalances';
 
 export function Balances(): ReactElement {
-  const [data, setData] = useState<Record[]>([]);
-  const contracts = useContract();
-  const { address, networkId } = useEthers();
+  const data = useBalances();
 
-  useEffect(() => {
-    if (contracts && address) {
-      loadBalances(contracts, address);
-    }
-  }, [contracts, address, networkId]);
-
-  const loadBalances = async (contracts: ContractMap, address: string) => {
-    let result = [];
-    let key = 0;
-    for (const contract of Object.values(contracts)) {
-      try {
-        const tokenSymbol = await contract.symbol();
-        const tokenName = await contract.name();
-        const balance = formatNumber(formatUnits(await contract.balanceOf(address)), 4);
-        result.push({
-          token: (
-            <>
-              <strong>{tokenSymbol}</strong> {tokenName}
-            </>
-          ),
-          balance,
-          key: ++key,
-        });
-      } catch (e) {
-        // don't count
-      }
-    }
-    setData(result);
-  };
   const columns = [
     {
       title: 'Token',

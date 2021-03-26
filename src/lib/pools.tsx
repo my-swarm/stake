@@ -6,7 +6,7 @@ export interface PoolMeta {
   tokenSymbol: string;
   code: string;
   icon: string;
-  description: string;
+  description?: string;
 }
 
 export interface PoolInfo {

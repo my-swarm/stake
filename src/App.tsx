@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Layout, Row } from 'antd';
-import { Pools, MetamaskConnect, Hero, Heading, Balances, MetamaskStatus } from './components';
+import { Pools, MetamaskConnect, Hero, Heading, Balances, Rewards, MetamaskStatus } from './components';
 import { useEthers } from './lib';
 const { Header, Content, Footer } = Layout;
 
@@ -26,10 +26,14 @@ function App() {
       <Content>
         {connected ? (
           <>
-            <Heading>Balances</Heading>
-            <Balances />
+            {/*<Heading>Balances</Heading>*/}
+            {/*<Balances />*/}
             <Heading>Pools</Heading>
             <Pools />
+            {/*
+            <Heading>Refill Rewards</Heading>
+            <Rewards />
+*/}
           </>
         ) : (
           <MetamaskStatus />

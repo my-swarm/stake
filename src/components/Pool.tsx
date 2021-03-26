@@ -6,12 +6,13 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { constants } from '../config';
 import {
   DepositWithdrawAction,
-  normalizePoolInfo,
   PoolInfo,
   ChefInfo,
   PoolMeta,
-  useContract,
   useEthers,
+  useContract,
+  useBalances,
+  normalizePoolInfo,
   parseUnits,
   formatUnits,
   formatNumber,
@@ -39,6 +40,7 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
   const [amount, setAmount] = useState<string>('');
   const [apy, setApy] = useState<string>('N/A');
   const contracts = useContract();
+  const balances = useBalances();
   const { chef } = contracts;
   const token = contracts[pool.code];
 
@@ -133,11 +135,16 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
   };
 
   function formatPendingReward() {
-    return pendingReward ? formatNumber(formatUnits(pendingReward), 2) : 'N/A';
+    return pendingReward ? formatNumber(formatUnits(pendingReward), 4) : 'N/A';
   }
 
   function formatStaked() {
     return staked ? formatNumber(formatUnits(staked), 2) : 'N/A';
+  }
+
+  function formatBalance() {
+    return 'N/A';
+    //return balances && balances[pool.id] ? formatNumber(formatUnits(balances[pool.id]), 2) : 'N/A';
   }
 
   function dwButtonTitle() {
@@ -151,81 +158,98 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
   return (
     <div className="pool">
       {poolInfo ? (
-        <Card title={pool.name} extra={`${poolInfo.allocPoint}× rewards`}>
-          <div className="pool-info">
-            <div className="pool-image">
-              <img src={`/${pool.icon}`} alt="Token symbol" />
-            </div>
-            <div className="pool-apy">APY: {apy}%</div>
-            <p>{pool.description}</p>
-          </div>
-          <Divider />
-          <Row gutter={24}>
-            <Col sm={12} style={{ textAlign: 'right' }}>
-              <Statistic title="SWM earned" value={formatPendingReward()} className="stat-earned" />
+        <Card>
+          <Row className="poolHeader">
+            <Col span={18} className="pool-header-left">
+              <Space>
+                <div className="pool-title">{pool.name}</div>
+                {pool.id !== 0 && (
+                  <a className="pool-add-liquidity" href="https://app.uniswap.org">
+                    Add liquidity to Uniswap
+                  </a>
+                )}
+              </Space>
             </Col>
-            <Col sm={12}>
-              <Button onClick={handleClaim} disabled={!pendingReward || pendingReward.eq(0)}>
-                {action === 'claim' ? 'Claiming...' : 'Claim SWM'}
-              </Button>
+            <Col span={6} className="pool-header-right">
+              {poolInfo.allocPoint}× rewards
             </Col>
           </Row>
           <Divider />
-          <Row gutter={24}>
-            <Col sm={12} style={{ textAlign: 'right' }}>
-              <Statistic title={`${pool.tokenSymbol} staked`} value={formatStaked()} className="stat-staked" />
+          <Row>
+            <Col span={12}>
+              <div className="pool-image">
+                <img src={`/${pool.icon}`} alt="Token symbol" />
+              </div>
             </Col>
-            <Col sm={12}>
-              {isApproved ? (
+            <Col span={12}>
+              <div className="pool-info">
+                <div className="pool-apy">APY: {apy}%</div>
+                {pool.description && <p>{pool.description}</p>}
+              </div>
+
+              <div className="earned">
+                <div className="earned-label">SWM Earned</div>
+                <div className="earned-amount">
+                  {formatPendingReward()} <span className="unit">SWM</span>
+                </div>
+                <div className="earned-button">
+                  <Button onClick={handleClaim} disabled={!pendingReward || pendingReward.eq(0)}>
+                    {action === 'claim' ? 'Claiming...' : 'Claim'}
+                  </Button>
+                </div>
+              </div>
+            </Col>
+          </Row>
+          <Divider />
+          <Row>
+            <Col>
+              <div className="stake">
+                <h3 className="stake-title">Stake your {pool.tokenSymbol} tokens to earn SWM rewards</h3>
+                {isApproved ? (
+                  <>
+                    <div className="stake-balance">
+                      <Space>
+                        <span>Available: {formatBalance()}</span>
+                        <span>Staked: {formatStaked()}</span>
+                      </Space>
+                    </div>
+                    <div className="stake-form">
+                      <Space size="small">
+                        <Input
+                          className="stake-input"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          suffix={
+                            <Button type="link" onClick={handleMax} size="small" className="stake-max">
+                              Max
+                            </Button>
+                          }
+                        />
+                        <Dropdown.Button
+                          overlay={<PoolDepositWithdrawMenu onChange={handleSetDwAction} />}
+                          icon={<DownOutlined />}
+                          onClick={handleDepositWithdraw}
+                        >
+                          {dwButtonTitle()}
+                        </Dropdown.Button>
+                      </Space>
+                    </div>
+                  </>
+                ) : (
+                  <Button onClick={handleApprove}>
+                    {action === 'approve' ? 'Approving...' : `Approve ${pool.tokenSymbol}`}
+                  </Button>
+                )}
+              </div>
+
+              {!!error && (
                 <>
-                  <div className="pool-input">
-                    <Input
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      suffix={
-                        <Button type="link" onClick={handleMax} size="small">
-                          max
-                        </Button>
-                      }
-                    />
-                  </div>
-                  <Dropdown.Button
-                    overlay={<PoolDepositWithdrawMenu onChange={handleSetDwAction} />}
-                    icon={<DownOutlined />}
-                    onClick={handleDepositWithdraw}
-                  >
-                    {dwButtonTitle()}
-                  </Dropdown.Button>
-                </>
-              ) : (
-                <>
-                  <Space direction="vertical">
-                    <Button onClick={handleApprove}>
-                      {action === 'approve' ? 'Approving...' : `Approve ${pool.tokenSymbol}`}
-                    </Button>
-                    <Dropdown.Button
-                      overlay={<span />}
-                      icon={<DownOutlined />}
-                      onClick={handleDepositWithdraw}
-                      disabled={true}
-                    >
-                      {dwButtonTitle()}
-                    </Dropdown.Button>
-                  </Space>
+                  <Divider />
+                  <Alert type="error" message={error.message} />
                 </>
               )}
             </Col>
           </Row>
-          {!!error && (
-            <>
-              <Divider />
-              <Row style={{ width: '100%' }}>
-                <Col>
-                  <Alert type="error" message={error.message} />
-                </Col>
-              </Row>
-            </>
-          )}
         </Card>
       ) : (
         <Loading />

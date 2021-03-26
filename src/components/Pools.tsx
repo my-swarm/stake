@@ -21,7 +21,7 @@ export function Pools(): ReactElement {
   }, [chef]);
 
   return (
-    <Row>
+    <Row className="mb-4">
       <Col lg={{ span: 20, offset: 2 }} xl={{ span: 16, offset: 4 }}>
         <Row wrap gutter={[24, 24]}>
           {pools.map((pool) => (
