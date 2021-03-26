@@ -8,6 +8,7 @@ export interface PoolMeta {
   icon: string;
   description?: string;
   poolLink?: string;
+  lpContractAddress?: string;
 }
 
 export interface PoolInfo {

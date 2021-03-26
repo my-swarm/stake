@@ -12,12 +12,10 @@ export function Pools(): ReactElement {
   useEffect(() => {
     if (chef) {
       (async () => {
-        console.log('chef info before');
         setChefInfo({
           totalAllocPoint: (await chef.totalAllocPoint()).toNumber,
           rewardRate: await chef.rewardRate(),
         });
-        console.log('chef info after');
       })();
     }
   }, [chef]);
@@ -35,7 +33,11 @@ export function Pools(): ReactElement {
         <div className="pools-note">
           <strong>Staking Contract Address</strong>
           <br />
-          <a href="https://etherscan.io/address/0xd38abbaec03a9ff287efc9a5f0d0580e07335d1d">
+          <a
+            href="https://etherscan.io/address/0xd38abbaec03a9ff287efc9a5f0d0580e07335d1d"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             0xD38abbAeC03a9FF287eFc9a5F0d0580E07335D1D
           </a>
         </div>

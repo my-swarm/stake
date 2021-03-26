@@ -18,5 +18,6 @@ export const pools: PoolMeta[] = [
     tokenSymbol: 'SWM/ETH LP',
     description: null,
     poolLink: 'http://app.uniswap.org',
+    lpContractAddress: '0xe0b1433e0174b47e8879ee387f1069a0dbf94137',
   },
 ];

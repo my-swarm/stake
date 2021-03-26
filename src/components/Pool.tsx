@@ -18,6 +18,7 @@ import {
   useEthers,
 } from '../lib';
 import { Loading, MetamaskConnect, PoolDepositWithdrawMenu } from '.';
+import { useLpApy, useSwmApy } from '../lib/useApy';
 
 interface Props {
   chefInfo: ChefInfo;
@@ -38,11 +39,12 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
   const [poolInfo, setPoolInfo] = useState<PoolInfo>();
   const [dwAction, setDwAction] = useState<DepositWithdrawAction>('deposit');
   const [amount, setAmount] = useState<string>('');
-  const [apy, setApy] = useState<string>('N/A');
   const contracts = useContract();
   const balances = useBalances();
   const { chef } = contracts;
   const token = contracts[pool.code];
+  const lpApy = useLpApy('swmLp');
+  const swmApy = useSwmApy();
 
   console.log({ balances });
 
@@ -78,14 +80,6 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
       });
     }
   }, [token, address, chef]);
-
-  useEffect(() => {
-    if (tokenPrice && poolInfo) {
-      // const usdPerSecond = tokenPrice * poolInfo.allocPoint;
-      // const yearlyReturn = 12;
-      setApy('123');
-    }
-  }, [tokenPrice, poolInfo, chefInfo]);
 
   const reload = () => {
     setTs(Date.now());
@@ -163,6 +157,16 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
     }
   }
 
+  function apy(pid: number): string {
+    let result;
+    if (pid === 0) {
+      result = swmApy;
+    } else {
+      result = lpApy;
+    }
+    return result ? result + '%' : 'N/A';
+  }
+
   return (
     <div className="pool">
       {poolInfo ? (
@@ -191,7 +195,7 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
             </Col>
             <Col span={24} sm={12}>
               <div>
-                <div className="pool-apy">APY: {apy}%</div>
+                <div className="pool-apy">APY: {apy(pool.id)}</div>
                 {pool.description && <p>{pool.description}</p>}
               </div>
 

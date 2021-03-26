@@ -23,3 +23,18 @@ export function useContract(): ContractMap {
   }, [provider, signer, networkId]);
   return contracts;
 }
+
+export function useCustomContract(contractName, address): Contract {
+  const [contract, setContract] = useState<Contract>();
+  const { provider, signer } = useEthers();
+
+  useEffect(() => {
+    const signerOrProvider = signer || provider;
+    if (signerOrProvider) {
+      const abi = abis[contractName];
+      setContract(new Contract(address, abi, signerOrProvider));
+    }
+  }, [provider, signer]);
+
+  return contract;
+}

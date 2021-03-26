@@ -11,7 +11,7 @@ export const etherscanDomains = {
   [EthereumNetwork.Hardhat]: 'etherscan.l',
 };
 
-export type ContractType = 'chef' | 'erc20';
+export type ContractType = 'chef' | 'erc20' | 'uniPair';
 export type ContractName = 'chef' | 'swm' | 'swmLp';
 
 export type AddressConfig = Record<EthereumNetwork, Record<ContractName, string>>;

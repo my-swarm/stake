@@ -1,7 +1,11 @@
 import { AddressConfig, ContractName, ContractType, EthereumNetwork } from '../lib';
 
 export const contractAddresses: AddressConfig = {
-  [EthereumNetwork.Main]: { chef: '0xfasdf', swm: '0xfasdf', swmLp: '0xfasdf' },
+  [EthereumNetwork.Main]: {
+    chef: '0xD38abbAeC03a9FF287eFc9a5F0d0580E07335D1D',
+    swm: '0x3505F494c3f0fed0B594E01Fa41Dd3967645ca39',
+    swmLp: '0xe0b1433E0174b47E8879EE387f1069a0dBf94137',
+  },
   [EthereumNetwork.Kovan]: {
     chef: '0xde0EBBbcB678C15D10DB1c21449C9bd91D4Ad8d0',
     swm: '0x46874BfC5Ed8D1c238F615Bb95c13b99994Aa578',
