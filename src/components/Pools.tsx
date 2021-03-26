@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 
 import { pools } from '../config';
 import { Pool } from '.';
-import { ChefInfo, useContract, useEthers } from '../lib';
+import { ChefInfo, useContract } from '../lib';
 import { Col, Row } from 'antd';
 
 export function Pools(): ReactElement {
@@ -12,10 +12,12 @@ export function Pools(): ReactElement {
   useEffect(() => {
     if (chef) {
       (async () => {
+        console.log('chef info before');
         setChefInfo({
           totalAllocPoint: (await chef.totalAllocPoint()).toNumber,
           rewardRate: await chef.rewardRate(),
         });
+        console.log('chef info after');
       })();
     }
   }, [chef]);

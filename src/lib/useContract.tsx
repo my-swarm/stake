@@ -8,17 +8,18 @@ export type ContractMap = { [key: string]: Contract };
 
 export function useContract(): ContractMap {
   const [contracts, setContracts] = useState<ContractMap>({});
-  const { signer, networkId } = useEthers();
+  const { provider, signer, networkId } = useEthers();
+  const signerOrProvider = signer || provider;
   useEffect(() => {
-    if (signer && networkId) {
+    if (signerOrProvider && networkId) {
       const result: ContractMap = {};
       for (const [name, type] of Object.entries(contractTypes)) {
         const abi = abis[type];
         const address = contractAddresses[networkId][name as ContractName];
-        result[name] = new Contract(address, abi, signer);
+        result[name] = new Contract(address, abi, signerOrProvider);
       }
       setContracts(result);
     }
-  }, [signer, networkId]);
+  }, [provider, signer, networkId]);
   return contracts;
 }

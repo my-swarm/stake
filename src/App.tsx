@@ -32,7 +32,7 @@ function App() {
 */}
           </>
         ) : (
-          <MetamaskStatus />
+          <div>Conneting to Ethereum...</div>
         )}
       </Content>
       <Footer>

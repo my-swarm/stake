@@ -7,7 +7,7 @@ interface MetamaskConnectProps {
   label?: string;
 }
 
-export function MetamaskConnect({ label = 'Connect with Metamask' }: MetamaskConnectProps) {
+export function MetamaskConnect({ label = 'Connect' }: MetamaskConnectProps) {
   const { connect, address } = useEthers();
 
   if (!connect) return null;
