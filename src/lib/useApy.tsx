@@ -20,6 +20,7 @@ export function useLpApy(contractKey) {
       const rewardRate = await chef.rewardRate(); // SWM + 18 precision
       const totalAllocPoint = await chef.totalAllocPoint();
       const { allocPoint, totalStaked } = await chef.poolInfo(pid);
+      if (totalStaked.eq(0)) return;
 
       const totalSupply = await uniPair.totalSupply(); // LP tokens
       const [reserveSwm] = await uniPair.getReserves(); // SWM
