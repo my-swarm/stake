@@ -5,3 +5,5 @@ export * from './pools';
 export * from './useContract';
 export * from './numbers';
 export * from './useBalances';
+export * from './useApy';
+export * from './dev';

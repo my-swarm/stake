@@ -1,4 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
+import { EthereumNetwork } from './ethereum';
+
+export type AddressOnNetwork = Record<EthereumNetwork, string>;
 
 export interface PoolMeta {
   id: number;
@@ -8,7 +11,7 @@ export interface PoolMeta {
   icon: string;
   description?: string;
   poolLink?: string;
-  lpContractAddress?: string;
+  lpContractAddress?: AddressOnNetwork;
   allocPoint: number;
 }
 

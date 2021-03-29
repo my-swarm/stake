@@ -8,7 +8,7 @@ import { Address } from '.';
 export function MetamaskStatus() {
   const { status, connect, address, networkId } = useEthers();
 
-  const supportedNetworks = [EthereumNetwork.Main, EthereumNetwork.Xdai];
+  const supportedNetworks = [EthereumNetwork.Main];
 
   let cardTitle, cardBody;
   switch (networkId && status) {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Contract } from '@ethersproject/contracts';
-import { ContractName, useEthers } from '.';
+import { AddressOnNetwork, ContractName, useEthers } from '.';
 import { abis } from '../abi';
 import { contractAddresses, contractTypes } from '../config';
 
@@ -24,15 +24,15 @@ export function useContract(): ContractMap {
   return contracts;
 }
 
-export function useCustomContract(contractName, address): Contract {
+export function useCustomContract(contractName: string, addresses: AddressOnNetwork): Contract {
   const [contract, setContract] = useState<Contract>();
-  const { provider, signer } = useEthers();
+  const { provider, signer, networkId } = useEthers();
 
   useEffect(() => {
     const signerOrProvider = signer || provider;
-    if (signerOrProvider) {
+    if (signerOrProvider && networkId) {
       const abi = abis[contractName];
-      setContract(new Contract(address, abi, signerOrProvider));
+      setContract(new Contract(addresses[networkId], abi, signerOrProvider));
     }
   }, [provider, signer]);
 

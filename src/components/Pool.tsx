@@ -1,6 +1,6 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
 import { Alert, Button, Card, Col, Divider, Dropdown, Input, Row, Space } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, LoadingOutlined } from '@ant-design/icons';
 import { BigNumber } from '@ethersproject/bignumber';
 
 import { constants } from '../config';
@@ -16,9 +16,10 @@ import {
   useBalances,
   useContract,
   useEthers,
+  useLpApy,
+  useSwmApy,
 } from '../lib';
 import { Loading, MetamaskConnect, PoolDepositWithdrawMenu } from '.';
-import { useLpApy, useSwmApy } from '../lib/useApy';
 
 interface Props {
   chefInfo: ChefInfo;
@@ -28,7 +29,6 @@ interface Props {
 type Action = 'approve' | 'claim' | 'withdraw' | 'deposit';
 
 export function Pool({ pool, chefInfo }: Props): ReactElement {
-  const tokenPrice = 0.2;
   const { address, networkId } = useEthers();
   const [ts, setTs] = useState<number>(Date.now());
   const [isApproved, setApproved] = useState<boolean>(false);
@@ -45,8 +45,6 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
   const token = contracts[pool.code];
   const lpApy = useLpApy('swmLp');
   const swmApy = useSwmApy();
-
-  console.log({ balances });
 
   // user non-related stuff
   useEffect(() => {
@@ -142,11 +140,11 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
   }
 
   function formatStaked() {
-    return staked ? formatNumber(formatUnits(staked), 2) + ' SWM' : 'N/A';
+    return staked ? formatNumber(formatUnits(staked), 2) : 'N/A';
   }
 
   function formatBalance() {
-    return balances && balances[pool.code] ? formatNumber(formatUnits(balances[pool.code].balance), 2) + ' SWM' : 'N/A';
+    return balances && balances[pool.code] ? formatNumber(formatUnits(balances[pool.code].balance), 2) : 'N/A';
   }
 
   function dwButtonTitle() {
@@ -157,14 +155,14 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
     }
   }
 
-  function apy(pid: number): string {
+  function apy(pid: number): ReactNode {
     let result;
     if (pid === 0) {
       result = swmApy;
     } else {
       result = lpApy;
     }
-    return result ? result + '%' : 'N/A';
+    return result ? formatNumber(result, 2) + '%' : <LoadingOutlined />;
   }
 
   return (
@@ -230,7 +228,9 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
                     <div className="stake-balance">
                       {isApproved ? (
                         <Space>
-                          <span>Available: {formatBalance()}</span>
+                          <span>
+                            {pool.tokenSymbol} available: {formatBalance()}
+                          </span>
                           <span>Staked: {formatStaked()}</span>
                         </Space>
                       ) : (
