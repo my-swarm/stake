@@ -174,7 +174,7 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
               <Space>
                 <div className="pool-title">{pool.name}</div>
                 {pool.id !== 0 && (
-                  <a className="pool-add-liquidity" href={pool.poolLink}>
+                  <a className="pool-add-liquidity" href={pool.poolLink} target="_blank" rel="noreferrer noopener">
                     Add liquidity to Uniswap
                   </a>
                 )}

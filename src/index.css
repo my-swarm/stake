@@ -190,6 +190,7 @@ button img, img.icon { height: 20px; width: auto; margin-right: 4px; }
   color: #F99400;
   font-weight: bold;
   font-size: 20px;
+  margin-bottom: 4px;
 }
 
 .earned-label {
@@ -198,6 +199,7 @@ button img, img.icon { height: 20px; width: auto; margin-right: 4px; }
 }
 
 .earned-amount {
+  line-height: 32px;
   font-size: 28px;
   font-weight: bold;
 }
