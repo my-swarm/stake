@@ -51,6 +51,7 @@ export function useSwmApy() {
       const rewardRate = await chef.rewardRate(); // SWM + 18 precision
       const totalAllocPoint = await chef.totalAllocPoint();
       const { allocPoint, totalStaked } = await chef.poolInfo(0);
+      if (totalStaked.eq(0)) return;
 
       const poolRewardRate = rewardRate.mul(allocPoint).div(totalAllocPoint);
       const rewardPerYear = poolRewardRate.mul(constants.secondsYear); // +18 precision

@@ -12,8 +12,8 @@ export const pools: PoolMeta[] = [
   },
 
   {
-    // id: 1,
-    id: 2, // kovan id.
+    id: 1,
+    // id: 2, // kovan id.
     code: 'swmLp',
     icon: 'swarm-coin-black.png',
     name: 'SWM/ETH Pool',
