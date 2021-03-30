@@ -20,18 +20,8 @@ export function Pools(): ReactElement {
     }
   }, [chef]);
 
-  const startTs = 1617112800;
-  const currentTs = Math.floor(Date.now() / 1000);
-
   return (
     <>
-      {startTs > currentTs && (
-        <Row className="mb-3">
-          <Col style={{ margin: 'auto' }}>
-            <Alert message="Rewards distribution will start on 30/03/2021 at 13:00 UTC" type="error" />
-          </Col>
-        </Row>
-      )}
       <Row className="mb-4">
         <Col lg={{ span: 20, offset: 2 }} xl={{ span: 16, offset: 4 }}>
           <Row wrap gutter={[24, 24]}>
