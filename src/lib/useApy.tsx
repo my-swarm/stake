@@ -15,8 +15,6 @@ export function useLpApy(contractKey) {
   const { chef } = useContract();
 
   useEffect(() => {
-    return;
-
     if (!uniPair || !chef) return;
     (async () => {
       const rewardRate = await chef.rewardRate(); // SWM + 18 precision
@@ -47,7 +45,6 @@ export function useSwmApy() {
   const [apy, setApy] = useState<number>();
 
   useEffect(() => {
-    return;
     if (!chef) return;
 
     (async () => {
