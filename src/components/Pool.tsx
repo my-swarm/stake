@@ -137,6 +137,15 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
       .catch(handleError);
   };
 
+  const handleWithdrawV1 = () => {
+    setError(undefined);
+    chefV1
+      .emergencyWithdraw(pool.id)
+      .then((tx) => tx.wait())
+      .then(reload)
+      .catch(handleError);
+  };
+
   const handleSetDwAction = (action) => {
     setDwAction(action);
     setAmount('');
@@ -235,7 +244,7 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
               <Row>
                 <Col>
                   <div className="stake">
-                    {stakedV1.gt(0) ? (
+                    {true || stakedV1.gt(0) ? (
                       <div className="mt-1">
                         <Tooltip
                           title={
@@ -250,7 +259,7 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
                             </>
                           }
                         >
-                          <Button danger>
+                          <Button danger onClick={handleWithdrawV1}>
                             Withdraw {formatStakedV1()} {pool.tokenSymbol} from old contract
                           </Button>
                         </Tooltip>
