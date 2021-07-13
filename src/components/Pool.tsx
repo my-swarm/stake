@@ -244,7 +244,7 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
               <Row>
                 <Col>
                   <div className="stake">
-                    {true || stakedV1.gt(0) ? (
+                    {stakedV1.gt(0) ? (
                       <div className="mt-1">
                         <Tooltip
                           title={
