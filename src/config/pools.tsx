@@ -21,9 +21,9 @@ export const pools: PoolMeta[] = [
     description: null,
     poolLink: 'https://app.uniswap.org/#/add/0x3505f494c3f0fed0b594e01fa41dd3967645ca39/ETH',
     lpContractAddress: {
-      [EthereumNetwork.Hardhat]: '0x0',
+      // [EthereumNetwork.Hardhat]: '0x0',
       [EthereumNetwork.Main]: '0xe0b1433e0174b47e8879ee387f1069a0dbf94137',
-      [EthereumNetwork.Kovan]: '0xbb2f4187cecd7676d8aedd8374b02d1b480e77e2',
+      // [EthereumNetwork.Kovan]: '0xbb2f4187cecd7676d8aedd8374b02d1b480e77e2',
     },
     allocPoint: 4,
   },

@@ -9,3 +9,4 @@ export * from './Heading';
 export * from './Loading';
 export * from './Balances';
 export * from './Rewards';
+export * from './UpgradeAnnouncement';

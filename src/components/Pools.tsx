@@ -35,11 +35,11 @@ export function Pools(): ReactElement {
             <strong>Staking Contract Address</strong>
             <br />
             <a
-              href="https://etherscan.io/address/0xd38abbaec03a9ff287efc9a5f0d0580e07335d1d"
+              href="https://etherscan.io/address/0xe13c0ec78d283eb8cca72edd018a9c13ad0e002a"
               target="_blank"
               rel="noreferrer noopener"
             >
-              0xD38abbAeC03a9FF287eFc9a5F0d0580E07335D1D
+              0xE13c0Ec78D283eb8Cca72Edd018a9c13AD0E002a
             </a>
           </div>
         </Col>

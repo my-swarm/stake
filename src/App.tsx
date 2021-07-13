@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
-import { Heading, Hero, MetamaskConnect, Pools } from './components';
+import { Heading, Hero, MetamaskConnect, Pools, UpgradeAnnouncement } from './components';
 import { useEthers } from './lib';
 
 const { Header, Content, Footer } = Layout;
@@ -21,6 +21,7 @@ function App() {
         </div>
       </div>
       <Content>
+        <UpgradeAnnouncement />
         {connected ? (
           <>
             <Heading>Pools</Heading>
