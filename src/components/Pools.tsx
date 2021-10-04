@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { pools } from '../config';
 import { Pool } from '.';
 import { ChefInfo, useContract } from '../lib';
-import { Alert, Col, Row } from 'antd';
+import { Col, Row } from 'antd';
 
 export function Pools(): ReactElement {
   const { chef } = useContract();

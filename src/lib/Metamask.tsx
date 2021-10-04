@@ -38,17 +38,17 @@ export class Metamask {
     this.stateUpdateCallback(this.ethereum);
   };
 
-  public init(): void {
+  public async init(): Promise<void> {
     const { ethereum } = this;
-    if (!ethereum || !ethereum.isMetaMask) {
-      console.log('Please install MetaMask.');
+    if (!ethereum || (!ethereum.isMetaMask && !ethereum.isTrust)) {
+      alert('Ethereum provier not found. Please install Metamask or Trust Wallet (on mobile)');
       throw new Error('Please install MetaMask.');
     }
 
     try {
-      const chainId = ethereum.send('eth_chainId');
+      const chainId = await ethereum.request({ method: 'eth_chainId' });
       this.handleChainChanged(chainId, true);
-      const accounts = ethereum.send('eth_accounts');
+      const accounts = await ethereum.request({ method: 'eth_accounts' });
       this.handleAccountsChanged(accounts);
     } catch (err) {
       // In the future, maybe in 2020, this will return a 4100 error if
@@ -60,16 +60,18 @@ export class Metamask {
     }
 
     ethereum.on('chainChanged', this.handleChainChanged);
+    // ethereum.on('chainChanged', () => window.location.reload());
     // Note that this event is emitted on page load.
     // If the array of accounts is non-empty, you're already
     // connected.
     ethereum.on('accountsChanged', this.handleAccountsChanged);
+    // ethereum.on('accountsChanged', () => ethereum.on('chainChanged', window.location.reload()));
   }
 
-  public connect(): void {
+  public async connect(): Promise<void> {
     // This is equivalent to ethereum.enable()
     try {
-      const accounts = this.ethereum.send('eth_requestAccounts');
+      const accounts = await this.ethereum.request({ method: 'eth_requestAccounts' });
       this.handleAccountsChanged(accounts);
     } catch (err) {
       console.error(err);
@@ -81,11 +83,11 @@ export class Metamask {
     this.stateUpdateCallback(this.ethereum);
   }
 
-  public initAndConnect(silent = false): void {
+  public async initAndConnect(silent = false): Promise<void> {
     try {
-      this.init();
+      await this.init();
       if (!silent) {
-        this.connect();
+        await this.connect();
       }
       return this.ethereum;
     } catch (err) {
