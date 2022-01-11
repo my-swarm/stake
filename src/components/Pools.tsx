@@ -1,13 +1,17 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 
-import { pools } from '../config';
+import { contractAddresses, pools } from '../config';
 import { Pool } from '.';
-import { ChefInfo, useContract } from '../lib';
+import { ChefInfo, etherscanDomains, useContract, useEthers } from '../lib';
 import { Col, Row } from 'antd';
 
 export function Pools(): ReactElement {
   const { chef } = useContract();
   const [chefInfo, setChefInfo] = useState<ChefInfo>();
+  const { networkId } = useEthers();
+
+  const etherscanDomain = etherscanDomains[networkId] ?? null;
+  const stakingContractAddress = contractAddresses[networkId].chef;
 
   useEffect(() => {
     if (chef) {
@@ -37,11 +41,11 @@ export function Pools(): ReactElement {
             <strong>Staking Contract Address</strong>
             <br />
             <a
-              href="https://etherscan.io/address/0xe13c0ec78d283eb8cca72edd018a9c13ad0e002a"
+              href={`https://${etherscanDomain}/address/${stakingContractAddress}`}
               target="_blank"
               rel="noreferrer noopener"
             >
-              0xE13c0Ec78D283eb8Cca72Edd018a9c13AD0E002a
+              {stakingContractAddress}
             </a>
           </div>
         </Col>

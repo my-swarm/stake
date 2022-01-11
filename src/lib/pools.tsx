@@ -10,7 +10,7 @@ export interface PoolMeta {
   code: string;
   icon: string;
   description?: string;
-  poolLink?: string;
+  poolLink?: AddressOnNetwork;
   lpContractAddress?: AddressOnNetwork;
   allocPoint: number;
 }

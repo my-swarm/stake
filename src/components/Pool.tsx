@@ -220,8 +220,13 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
               <Space>
                 <div className="pool-title">{pool.name.replace('{networkToken}', networkToken[networkId])}</div>
                 {pool.id !== 0 && (
-                  <a className="pool-add-liquidity" href={pool.poolLink} target="_blank" rel="noreferrer noopener">
-                    Add liquidity to Uniswap
+                  <a
+                    className="pool-add-liquidity"
+                    href={pool.poolLink[networkId]}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Add liquidity
                   </a>
                 )}
               </Space>
