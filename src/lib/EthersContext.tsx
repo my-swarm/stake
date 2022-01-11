@@ -1,9 +1,9 @@
 import React, { ReactElement, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
-import { getNetwork, Network, Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
+import { getNetwork, Network, ExternalProvider, Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { Signer } from '@ethersproject/abstract-signer';
 import { ethProvider } from '../config';
-import { Metamask, EthereumNetwork } from '../lib';
+import { Metamask, EthereumNetwork, ethereumNetworks } from '../lib';
 
 export enum EthersStatus {
   DISCONNECTED,
@@ -16,12 +16,15 @@ interface ContextProps {
   provider?: Web3Provider | JsonRpcProvider;
   signer?: Signer;
   address?: string;
+  browserNetworkId: EthereumNetwork;
   networkId: EthereumNetwork;
   network: Network;
   connect: (silent: boolean) => void;
   connected: boolean;
   disconnect: () => void;
   contract: (name: string) => Contract;
+  changeNetwork: (networkId: number) => void;
+  wrongNetwork: boolean;
 }
 
 export const EthersContext = React.createContext<Partial<ContextProps>>({});
@@ -33,11 +36,14 @@ interface EthersProviderProps {
 export function EthersProvider({ children }: EthersProviderProps): ReactElement {
   const [provider, setProvider] = useState<Web3Provider | JsonRpcProvider>(undefined);
   const [signer, setSigner] = useState<Signer>();
+  const [browserNetworkId, setBrowserNetworkId] = useState<EthereumNetwork>();
   const [networkId, setNetworkId] = useState<EthereumNetwork>();
   const [status, setStatus] = useState<EthersStatus>(EthersStatus.DISCONNECTED);
   const [address, setAddress] = useState<string>();
   const [metamask, setMetamask] = useState<Metamask>();
   const ethereum = window['ethereum'];
+
+  const allowedNetworks = Object.keys(ethereumNetworks);
 
   useEffect(() => {
     if ((process as any).browser && ethereum) {
@@ -65,24 +71,32 @@ export function EthersProvider({ children }: EthersProviderProps): ReactElement 
     }
   }, [metamask, connect]);
 
-  async function resetWeb3Provider(ethereum = undefined) {
-    if (!ethereum) {
+  async function resetWeb3Provider(ethereum?: ExternalProvider) {
+    // just to make sure ethereum really is passed. It should be.
+    const fail = () => {
       setStatus(EthersStatus.FAILED);
-      return;
-    }
-    const _provider = new Web3Provider(ethereum);
+      return false;
+    };
+    if (!ethereum) return fail();
+    const _provider = new Web3Provider(ethereum, 'any');
+    _provider.on('network', (newNetwork, oldNetwork) => {
+      // does not really help
+      // the problem is we are calling contrats while ethers is switching the networks
+      // I solved it by catching aync errors and discarding them. Not ideal for sure.
+      // if (oldNetwork) window.location.reload();
+    });
+    if (!_provider) return fail();
 
-    setProvider(_provider);
-    if (!_provider) {
-      setStatus(EthersStatus.FAILED);
-      return;
-    }
-
+    const _networkId = (await _provider.getNetwork()).chainId;
+    setBrowserNetworkId(_networkId);
+    const isAllowedNetwork = allowedNetworks.indexOf(_networkId.toString()) !== -1;
     const accounts = await _provider.listAccounts();
-    if (accounts && accounts.length > 0) {
+
+    if (isAllowedNetwork && accounts && accounts.length > 0) {
       const _signer = _provider && _provider.getSigner();
-      setSigner(_signer);
       const _networkId = (await _signer.getChainId()) as EthereumNetwork;
+      setProvider(_provider);
+      setSigner(_signer);
       setNetworkId(_networkId);
       setAddress(accounts[0].toLowerCase());
       setStatus(EthersStatus.CONNECTED);
@@ -106,16 +120,11 @@ export function EthersProvider({ children }: EthersProviderProps): ReactElement 
     setStatus(EthersStatus.CONNECTED);
   }
 
-  // console.log({
-  //   provider,
-  //   signer,
-  //   status,
-  //   connected: status === EthersStatus.CONNECTED,
-  //   address,
-  //   networkId,
-  //   network: getNetwork(networkId),
-  //   connect,
-  // });
+  async function changeNetwork(networkId: number) {
+    if (!metamask) return;
+    metamask.changeNetwork(networkId);
+  }
+
   return (
     <EthersContext.Provider
       value={{
@@ -125,8 +134,11 @@ export function EthersProvider({ children }: EthersProviderProps): ReactElement 
         connected: status === EthersStatus.CONNECTED,
         address,
         networkId,
+        browserNetworkId,
         network: getNetwork(networkId),
         connect,
+        changeNetwork,
+        wrongNetwork: browserNetworkId && allowedNetworks.indexOf(browserNetworkId.toString()) === -1,
       }}
     >
       {children}

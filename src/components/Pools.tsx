@@ -12,10 +12,12 @@ export function Pools(): ReactElement {
   useEffect(() => {
     if (chef) {
       (async () => {
-        setChefInfo({
-          totalAllocPoint: (await chef.totalAllocPoint()).toNumber,
-          rewardRate: await chef.rewardRate(),
-        });
+        try {
+          setChefInfo({
+            totalAllocPoint: (await chef.totalAllocPoint()).toNumber,
+            rewardRate: await chef.rewardRate(),
+          });
+        } catch (e) {}
       })();
     }
   }, [chef]);

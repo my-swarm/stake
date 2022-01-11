@@ -2,6 +2,7 @@ import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
 import { Alert, Button, Card, Col, Divider, Dropdown, Input, Row, Space, Tooltip } from 'antd';
 import { DownOutlined, LoadingOutlined } from '@ant-design/icons';
 import { BigNumber } from '@ethersproject/bignumber';
+import { networkToken } from '../lib';
 
 import { constants } from '../config';
 import {
@@ -28,6 +29,8 @@ interface Props {
 
 type Action = 'approve' | 'claim' | 'withdraw' | 'deposit';
 
+const noErrorHandle = () => {};
+
 export function Pool({ pool, chefInfo }: Props): ReactElement {
   const { address, networkId } = useEthers();
   const [ts, setTs] = useState<number>(Date.now());
@@ -50,39 +53,57 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
   // user non-related stuff
   useEffect(() => {
     if (networkId && chef) {
-      chef.poolInfo(pool.id).then((pi) => {
-        setPoolInfo(normalizePoolInfo(pi));
-      });
+      chef
+        .poolInfo(pool.id)
+        .then((pi) => {
+          setPoolInfo(normalizePoolInfo(pi));
+        })
+        .catch(noErrorHandle);
     }
   }, [networkId, chef, pool.id, ts]);
 
   // user related stuff
   useEffect(() => {
-    if (address && networkId && chef && chefV1) {
+    if (address && networkId && chef) {
       chef
         .pendingReward(pool.id, address)
         .then((x) => {
           setPendingReward(x);
         })
         .catch((err) => setPendingReward(BigNumber.from(0)));
-      chef.userInfo(pool.id, address).then((x) => {
-        setStaked(x.amount);
-      });
-      chefV1.userInfo(pool.id, address).then((x) => {
-        setStakedV1(x.amount);
-      });
+
+      chef
+        .userInfo(pool.id, address)
+        .then((x) => {
+          setStaked(x.amount);
+        })
+        .catch(noErrorHandle);
     }
   }, [address, networkId, chef, chefV1, pool.id, ts]);
 
   useEffect(() => {
+    if (address && networkId && chef && chefV1) {
+      chefV1
+        .userInfo(pool.id, address)
+        .then((x) => {
+          setStakedV1(x.amount);
+        })
+        .catch(noErrorHandle);
+    }
+  });
+
+  useEffect(() => {
     if (token && address) {
-      token.allowance(address, chef.address).then((allowance) => {
-        // shoud probably explain this. Well, max allowance is so huge, that half is still huge. So we just assume
-        // anyone who has over half has unlimited and no one can actually lower to half by normal transactions
-        if (allowance.gt(constants.maxAllowance.div(2))) {
-          setApproved(true);
-        }
-      });
+      token
+        .allowance(address, chef.address)
+        .then((allowance) => {
+          // shoud probably explain this. Well, max allowance is so huge, that half is still huge. So we just assume
+          // anyone who has over half has unlimited and no one can actually lower to half by normal transactions
+          if (allowance.gt(constants.maxAllowance.div(2))) {
+            setApproved(true);
+          }
+        })
+        .catch(noErrorHandle);
     }
   }, [token, address, chef]);
 
@@ -117,7 +138,10 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
 
   const handleMax = () => {
     if (dwAction === 'deposit') {
-      token.balanceOf(address).then((amount) => setAmount(formatUnits(amount)));
+      token
+        .balanceOf(address)
+        .then((amount) => setAmount(formatUnits(amount)))
+        .catch(noErrorHandle);
     } else {
       setAmount(formatUnits(staked));
     }
@@ -185,6 +209,8 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
     return result ? formatNumber(result, 2) + '%' : <LoadingOutlined />;
   }
 
+  const tokenSymbol = pool.tokenSymbol.replace('{networkToken}', networkToken[networkId]);
+
   return (
     <div className="pool">
       {poolInfo ? (
@@ -192,7 +218,7 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
           <Row className="poolHeader">
             <Col span={24} sm={18} className="pool-header-left">
               <Space>
-                <div className="pool-title">{pool.name}</div>
+                <div className="pool-title">{pool.name.replace('{networkToken}', networkToken[networkId])}</div>
                 {pool.id !== 0 && (
                   <a className="pool-add-liquidity" href={pool.poolLink} target="_blank" rel="noreferrer noopener">
                     Add liquidity to Uniswap
@@ -260,18 +286,18 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
                           }
                         >
                           <Button danger onClick={handleWithdrawV1}>
-                            Withdraw {formatStakedV1()} {pool.tokenSymbol} from old contract
+                            Withdraw {formatStakedV1()} {tokenSymbol} from old contract
                           </Button>
                         </Tooltip>
                       </div>
                     ) : (
                       <>
-                        <h3 className="stake-title">Stake your {pool.tokenSymbol} tokens to earn SWM rewards</h3>
+                        <h3 className="stake-title">Stake your {tokenSymbol} tokens to earn SWM rewards</h3>
                         <div className="stake-balance">
                           {isApproved ? (
                             <Space>
                               <span>
-                                {pool.tokenSymbol} available: {formatBalance()}
+                                {tokenSymbol} available: {formatBalance()}
                               </span>
                               <span>Staked: {formatStaked()}</span>
                             </Space>
@@ -302,7 +328,7 @@ export function Pool({ pool, chefInfo }: Props): ReactElement {
                             </Space>
                           ) : (
                             <Button onClick={handleApprove}>
-                              {action === 'approve' ? 'Approving...' : `Approve ${pool.tokenSymbol}`}
+                              {action === 'approve' ? 'Approving...' : `Approve ${tokenSymbol}`}
                             </Button>
                           )}
                         </div>

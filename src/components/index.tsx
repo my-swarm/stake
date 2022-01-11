@@ -3,6 +3,7 @@ export * from './Pools';
 export * from './Pool';
 export * from './PoolDepositWithdrawMenu';
 export * from './MetamaskConnect';
+export * from './NetworkSwitcher';
 export * from './MetamaskStatus';
 export * from './Hero';
 export * from './Heading';

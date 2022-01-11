@@ -16,11 +16,13 @@ export function useContract(): ContractMap {
       for (const [name, type] of Object.entries(contractTypes)) {
         const abi = abis[type];
         const address = contractAddresses[networkId][name as ContractName];
-        result[name] = new Contract(address, abi, signerOrProvider);
+        if (address) {
+          result[name] = new Contract(address, abi, signerOrProvider);
+        }
       }
       setContracts(result);
     }
-  }, [provider, signer, networkId]);
+  }, [signerOrProvider, networkId]);
   return contracts;
 }
 
@@ -28,13 +30,14 @@ export function useCustomContract(contractName: string, addresses: AddressOnNetw
   const [contract, setContract] = useState<Contract>();
   const { provider, signer, networkId } = useEthers();
 
+  const signerOrProvider = signer || provider;
+
   useEffect(() => {
-    const signerOrProvider = signer || provider;
     if (signerOrProvider && networkId) {
       const abi = abis[contractName];
       setContract(new Contract(addresses[networkId], abi, signerOrProvider));
     }
-  }, [provider, signer]);
+  }, [addresses, contractName, networkId, signerOrProvider]);
 
   return contract;
 }

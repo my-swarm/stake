@@ -264,3 +264,5 @@ button img, img.icon { height: 20px; width: auto; margin-right: 4px; }
 
 a { color: #f3902d; text-decoration: underline; }
 a:hover { color: black; text-decoration: underline; }
+
+.header-hero a:hover { color: #fff; }

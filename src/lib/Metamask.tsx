@@ -16,6 +16,7 @@ export class Metamask {
    * Handle chain (network) and chainChanged, per EIP 1193
    */
   private handleChainChanged = (chainId: number, skipCallback = false) => {
+    console.log('handleChainChanged', chainId, skipCallback);
     if (this._currentChainId !== chainId) {
       this._currentChainId = chainId;
       // Run any other necessary logic...
@@ -96,6 +97,15 @@ export class Metamask {
         throw err;
       }
     }
+  }
+
+  public async changeNetwork(chainId: number): Promise<void> {
+    console.log('change network');
+    await this.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0x' + chainId.toString(16) }],
+    });
+    console.log('change network done');
   }
 
   public disconnect(): void {

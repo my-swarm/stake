@@ -1,32 +1,28 @@
 export enum EthereumNetwork {
   Main = 1,
-  // Kovan = 42,
-  // Xdai = 100,
-  // Hardhat = 31337,
+  Polygon = 137,
+}
+
+export const ethereumNetworks = {
+  [EthereumNetwork.Main]: 'Mainnet',
+  [EthereumNetwork.Polygon]: 'Polygon',
 }
 
 export const etherscanDomains = {
   [EthereumNetwork.Main]: 'etherscan.io',
-  // [EthereumNetwork.Kovan]: 'kovan.etherscan.io',
-  // [EthereumNetwork.Xdai]: 'blockscout.com/poa/xdai',
-  // [EthereumNetwork.Hardhat]: 'etherscan.l',
+  [EthereumNetwork.Polygon]: 'polygonscan.com',
 };
 
 export type ContractType = 'chefV1' | 'chef' | 'erc20' | 'uniPair';
 export type ContractName = 'chefV1' | 'chef' | 'swm' | 'swmLp';
 
-export type AddressConfig = Record<EthereumNetwork, Record<ContractName, string>>;
+export type AddressConfig = Record<EthereumNetwork, Partial<Record<ContractName, string>>>;
+
+export const networkToken: Record<EthereumNetwork, string> = {
+  [EthereumNetwork.Main]: 'ETH',
+  [EthereumNetwork.Polygon]: 'MATIC',
+}
 
 export function getNetwork(id: EthereumNetwork): string | null {
-  switch (id) {
-    // case EthereumNetwork.Hardhat:
-    //   return 'Hardhat';
-    case EthereumNetwork.Main:
-      return 'Mainnet';
-    // case EthereumNetwork.Kovan:
-    //   return 'Kovan';
-    // case EthereumNetwork.Xdai:
-    //   return 'xDai';
-  }
-  return null;
+  return ethereumNetworks[id] || null;
 }

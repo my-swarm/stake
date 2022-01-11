@@ -1,14 +1,15 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 import { useEthers } from '../lib';
 import { Address } from './Address';
+import { NetworkSwitcher } from '.';
 
 interface MetamaskConnectProps {
   label?: string;
 }
 
 export function MetamaskConnect({ label = 'Connect' }: MetamaskConnectProps) {
-  const { connect, address } = useEthers();
+  const { connect, address, wrongNetwork } = useEthers();
 
   if (!connect) return null;
 
@@ -22,11 +23,21 @@ export function MetamaskConnect({ label = 'Connect' }: MetamaskConnectProps) {
 
   if (address)
     return (
-      <div className="metamask-connected">
-        Connected:
-        <Address short>{address}</Address>
-      </div>
+      <Space className="metamask-connected">
+        <span>Connected to</span>
+        <NetworkSwitcher />
+        <Address shorter>{address}</Address>
+      </Space>
     );
+
+  if (wrongNetwork) {
+    return (
+      <Space className="metamask-connected danger">
+        <span>Wrong network</span>
+        <NetworkSwitcher />
+      </Space>
+    );
+  }
 
   return (
     <Button
